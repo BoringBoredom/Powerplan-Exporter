@@ -1,3 +1,3 @@
 This script exports the current power plan (including all hidden settings) as text file using *powercfg /QH* and then converts it to a bat file. If the text file already exists, exporting is skipped. This makes editing of the text file and direct conversion to a bat file possible.  
 Manually change the name and description of the power plan in the bat file after converting.  
-Only works with an english Windows version.
+Only works with an English Windows version. As workaround you can ask someone with the same Windows version to send you his *PowerplanSettings.txt*
