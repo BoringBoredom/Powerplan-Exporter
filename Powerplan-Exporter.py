@@ -14,7 +14,7 @@ except:
 try:
     f = open("PowerplanSettings.txt", "r", errors="ignore")
 except FileNotFoundError:
-    os.system(f"powercfg /QH >{os.path.join(os.path.dirname(os.path.realpath(__file__)), 'PowerplanSettings.txt')}")
+    os.system(f'powercfg /QH >"{os.path.join(os.path.dirname(os.path.realpath(__file__)), "PowerplanSettings.txt")}"')
     f = open("PowerplanSettings.txt", "r", errors="ignore")
 bat = open("PowerplanSettings.bat", "w")
 
