@@ -1,6 +1,6 @@
 import re, os, requests
 
-current_version = 0.11
+current_version = 0.12
 
 try:
     r = requests.get("https://api.github.com/repos/BoringBoredom/Powerplan-Exporter/releases/latest")
