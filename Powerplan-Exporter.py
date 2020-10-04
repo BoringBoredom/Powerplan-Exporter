@@ -27,7 +27,7 @@ state = "power_setting_guid"
 for line in f:
     subgroup_guid = re.search(r".+: (.+)  \((.+)\)", line)
     power_setting_guid = re.search(r".+: (.+)  \((.+)\)", line)
-    power_setting_index = re.search(r".+: 0x(.+)", line)
+    power_setting_index = re.search(r".+: (.+)", line)
     if line[0:2] == "  " and line[2] != " " and subgroup_guid:
         current_subgroup_guid = subgroup_guid.group(1)
         current_subgroup_name = subgroup_guid.group(2)
@@ -36,14 +36,14 @@ for line in f:
         current_power_setting_name = power_setting_guid.group(2)
         state = "ac_power_setting_index"
     elif line[0:4] == "    " and line[4] != " " and state == "ac_power_setting_index" and power_setting_index:
-        current_ac_power_setting_index = power_setting_index.group(1)
+        current_ac_power_setting_index = int(power_setting_index.group(1), 16)
         state = "dc_power_setting_index"
     elif line[0:4] == "    " and line[4] != " " and state == "dc_power_setting_index" and power_setting_index:
-        current_dc_power_setting_index = power_setting_index.group(1)
+        current_dc_power_setting_index = int(power_setting_index.group(1), 16)
         if current_power_setting_name == "Power plan type":
-            bat.write(f"@echo {current_power_setting_name} ({current_subgroup_name})\npowercfg /setacvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 0x00000001\npowercfg /setdcvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 0x00000001\n\n")
+            bat.write(f"@echo {current_power_setting_name} ({current_subgroup_name})\npowercfg /setacvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 1\npowercfg /setdcvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 1\n\n")
         else:
-            bat.write(f"@echo {current_power_setting_name} ({current_subgroup_name})\npowercfg /setacvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 0x{current_ac_power_setting_index}\npowercfg /setdcvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} 0x{current_dc_power_setting_index}\n\n")
+            bat.write(f"@echo {current_power_setting_name} ({current_subgroup_name})\npowercfg /setacvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} {current_ac_power_setting_index}\npowercfg /setdcvalueindex {power_scheme_guid} {current_subgroup_guid} {current_power_setting_guid} {current_dc_power_setting_index}\n\n")
         state = "power_setting_guid"
 
 f.close()
