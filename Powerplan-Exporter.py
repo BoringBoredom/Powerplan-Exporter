@@ -25,15 +25,14 @@ bat.write("@echo Create, rename and activate new power plan\npowercfg /duplicate
 state = "power_setting_guid"
 
 for line in f:
-    subgroup_guid = re.search(r".+: (.+)  \((.+)\)", line)
-    power_setting_guid = re.search(r".+: (.+)  \((.+)\)", line)
-    power_setting_index = re.search(r".+: (.+)", line)
-    if line[0:2] == "  " and line[2] != " " and subgroup_guid:
-        current_subgroup_guid = subgroup_guid.group(1)
-        current_subgroup_name = subgroup_guid.group(2)
-    elif line[0:4] == "    " and line[4] != " " and state == "power_setting_guid" and power_setting_guid:
-        current_power_setting_guid = power_setting_guid.group(1)
-        current_power_setting_name = power_setting_guid.group(2)
+    guid = re.search(r": (.+)  \((.+)\)", line)
+    power_setting_index = re.search(r": (.+)", line)
+    if line[0:2] == "  " and line[2] != " " and guid:
+        current_subgroup_guid = guid.group(1)
+        current_subgroup_name = guid.group(2)
+    elif line[0:4] == "    " and line[4] != " " and state == "power_setting_guid" and guid:
+        current_power_setting_guid = guid.group(1)
+        current_power_setting_name = guid.group(2)
         state = "ac_power_setting_index"
     elif line[0:4] == "    " and line[4] != " " and state == "ac_power_setting_index" and power_setting_index:
         current_ac_power_setting_index = int(power_setting_index.group(1), 16)
